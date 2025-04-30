@@ -30,11 +30,14 @@
         <activity android:name=".ProfileDisplayActivity" />
         <activity android:name=".ViewEventActivity" />
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".SetupActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity 
+            android:name=".SetupActivity"
+            android:theme="@style/Theme.EventHive.NoActionBar" />
         <activity android:name=".addEventActivity" />
         <activity android:name=".displayEventActivity" />
         <activity android:name=".editEventActivity" />
+        <activity android:name=".InterestActivity" />
+        <activity android:name=".NotificationActivity" />
     </application>
 
 </manifest>

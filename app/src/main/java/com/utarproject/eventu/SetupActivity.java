@@ -65,7 +65,7 @@ public class SetupActivity extends AppCompatActivity {
                             .update("stuId", stuId, "campus", campus, "role", role)
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(SetupActivity.this, "Welcome, " + name, Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SetupActivity.this, HomeActivity.class));
+                                startActivity(new Intent(SetupActivity.this, ViewEventActivity.class));
                                 finish();
                             })
                             .addOnFailureListener(e -> {

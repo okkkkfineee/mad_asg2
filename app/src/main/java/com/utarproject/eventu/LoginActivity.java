@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (stuId != null && !stuId.isEmpty() && campus != null && !campus.isEmpty()) {
                             // User has completed setup
                             Toast.makeText(LoginActivity.this, "Welcome back, " + name, Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                            startActivity(new Intent(LoginActivity.this, ViewEventActivity.class));
                             finish();
                         } else {
                             // User hasn't completed setup, redirect to SetupActivity

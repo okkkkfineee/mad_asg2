@@ -104,8 +104,8 @@ public class ProfileDisplayActivity extends AppCompatActivity {
     }
 
     private void getBackHome() {
-        // Set an OnClickListener to navigate to the HomeActivity when clicked
-        Intent intent = new Intent(ProfileDisplayActivity.this, HomeActivity.class);
+        // Set an OnClickListener to navigate to the ViewEventActivity when clicked
+        Intent intent = new Intent(ProfileDisplayActivity.this, ViewEventActivity.class);
         startActivity(intent);
     }
 }
