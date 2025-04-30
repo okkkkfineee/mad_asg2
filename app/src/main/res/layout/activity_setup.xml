@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- EditText for Student ID -->
+    <EditText
+        android:id="@+id/studentIdEditText"
+        android:layout_width="380dp"
+        android:layout_height="73dp"
+        android:layout_marginBottom="20dp"
+        android:hint="Enter Student ID"
+        android:inputType="text" />
+
+    <!-- Spinner for selecting Campus -->
+    <Spinner
+        android:id="@+id/campusSpinner"
+        android:layout_width="385dp"
+        android:layout_height="62dp"
+        android:layout_below="@id/studentIdEditText"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Spinner for selecting Role -->
+    <Spinner
+        android:id="@+id/roleSpinner"
+        android:layout_width="385dp"
+        android:layout_height="62dp"
+        android:layout_below="@id/campusSpinner"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_below="@id/roleSpinner"
+        android:layout_marginTop="20dp"/>
+
+</RelativeLayout>

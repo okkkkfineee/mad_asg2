@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- TextView for Name (read-only) -->
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="#000"
+        android:text="Name"
+        android:textSize="16sp"
+        android:layout_marginBottom="20dp"
+        android:hint="Name" />
+
+    <!-- TextView for Student ID (read-only) -->
+    <TextView
+        android:id="@+id/studentIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameTextView"
+        android:layout_marginBottom="20dp"
+        android:textColor="#000"
+        android:text="Student ID"
+        android:textSize="16sp" />
+
+    <!-- TextView for Email (read-only) -->
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/studentIdTextView"
+        android:layout_marginBottom="20dp"
+        android:textColor="#000"
+        android:text="Email"
+        android:textSize="16sp" />
+
+    <!-- EditText for Phone Number (read-only)  -->
+    <TextView
+        android:id="@+id/phoneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emailTextView"
+        android:layout_marginBottom="20dp"
+        android:textColor="#000"
+        android:text="Phone Number"
+        android:textSize="16sp" />
+
+    <!-- TextView for Campus Selection -->
+    <TextView
+        android:id="@+id/campusTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/phoneTextView"
+        android:layout_marginBottom="20dp"
+        android:textColor="#000"
+        android:text="Campus"
+        android:textSize="16sp" />
+
+    <!-- TextView for Role Selection -->
+    <TextView
+        android:id="@+id/roleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/campusTextView"
+        android:layout_marginBottom="20dp"
+        android:textColor="#000"
+        android:text="Role"
+        android:textSize="16sp" />
+
+    <!-- Edit Profile Button -->
+    <Button
+        android:id="@+id/editProfileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:layout_below="@id/roleTextView"
+        android:layout_marginTop="20dp" />
+
+    <!-- Display Event Button (initially hidden) -->
+    <Button
+        android:id="@+id/displayEventButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Display Event"
+        android:layout_below="@id/editProfileButton"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
+
+    <!-- Create Event Button (initially hidden) -->
+    <Button
+        android:id="@+id/createEventButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Event"
+        android:layout_below="@id/displayEventButton"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
+
+    <!-- Home Button -->
+    <Button
+        android:id="@+id/homeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_below="@id/createEventButton"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>
+
+

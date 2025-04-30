@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addEventActivity">
+
+
+    <LinearLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="412dp"
+        android:layout_height="68dp"
+        android:background="@color/purple_500"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Create Event"
+            android:textColor="@color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Submit Button -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlelayout"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Event Name -->
+            <TextView
+                android:id="@+id/eventname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Name:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/input_eventname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Event Name"
+                android:textSize="15dp" />
+
+            <!-- Event Date -->
+            <TextView
+                android:id="@+id/eventdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Event Date:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/input_eventdate"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_datetimetext"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="26/4/2025"
+                    android:padding="4dp"
+                    android:textSize="15dp" />
+
+                <ImageButton
+                    android:id="@+id/imgbtn_calendar"
+                    android:layout_width="67dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_calendar" />
+            </LinearLayout>
+
+            <!-- Registration Time -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Registration Link:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextRegistrationLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Your Registration Link Here"
+                android:textSize="15dp" />
+
+            <!-- Event Time Start -->
+            <TextView
+                android:id="@+id/eventtimestart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Event Time Start:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/input_eventtimestart"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_datetimetext"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="9:00 AM"
+                    android:padding="4dp"
+                    android:textSize="15dp" />
+
+                <ImageButton
+                    android:id="@+id/imgbtn_calendarclock1"
+                    android:layout_width="37dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_calendar_clock" />
+            </LinearLayout>
+
+            <!-- Event Time End -->
+            <TextView
+                android:id="@+id/eventtimeend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Event Time End:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/input_eventtimeend"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_datetimetext"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="5:00 PM"
+                    android:padding="4dp"
+                    android:textSize="15dp" />
+
+                <ImageButton
+                    android:id="@+id/imgbtn_calendarclock2"
+                    android:layout_width="38dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_calendar_clock" />
+            </LinearLayout>
+
+            <!-- Fee -->
+            <TextView
+                android:id="@+id/fees"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Fee:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/input_eventfees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Member: RM3, Non-member: RM5"
+                android:textSize="15dp" />
+
+            <!-- Event Location -->
+            <TextView
+                android:id="@+id/campusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Event Location:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/campusSpinner"
+                android:layout_width="388dp"
+                android:layout_height="51dp"
+                android:layout_below="@id/campusTextView" />
+
+            <!-- USSDC Category -->
+            <TextView
+                android:id="@+id/USSDC_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="USSDC Category:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/ussdcSpinner"
+                android:layout_width="388dp"
+                android:layout_height="51dp"
+                android:layout_below="@id/USSDC_TextView" />
+
+            <!-- About the Event -->
+            <TextView
+                android:id="@+id/eventdescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="About the Event:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/input_eventdescription"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/custom_datetimetext"
+                android:gravity="top"
+                android:hint="Enter event details"
+                android:inputType="textMultiLine"
+                android:padding="4dp"
+                android:textSize="15dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/btnlayout"
+        android:layout_width="412dp"
+        android:layout_height="68dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <Button
+            android:id="@+id/btn_createevent"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/purple_500"
+            android:text="Create Event !"
+            android:textColor="@android:color/white"
+            android:textSize="18dp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

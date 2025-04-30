@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">EventU</string>
+
+    <!-- Array of campuses -->
+    <string-array name="campus_array">
+        <item>Sg Long Campus</item>
+        <item>Kampar Campus</item>
+        <!-- Add more campuses as needed -->
+    </string-array>
+
+    <!-- Array of roles -->
+    <string-array name="role_array">
+        <item>Organizer</item>
+        <item>Attendee</item>
+        <!-- Add more roles as needed -->
+    </string-array>
+
+    <!-- Array of USSDC -->
+    <string-array name="ussdc_array">
+        <item>Cognitive Skills</item>
+        <item>Communication and Language Skills</item>
+        <item>Complex Problem Solving</item>
+        <item>Critical Thinking</item>
+        <item>Digital Literacy</item>
+        <item>Emotional Intelligence, Cultural Intelligence and Teamwork</item>
+        <item>Entrepreneurship Skills</item>
+        <item>Leadership Skills</item>
+        <item>Lifelong Learning and Information Management</item>
+        <item>Moral and Professional Ethics</item>
+        <!-- Add more category as needed -->
+    </string-array>
+</resources>

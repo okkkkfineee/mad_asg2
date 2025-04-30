@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/view_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Name"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/view_event_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Date" />
+
+        <TextView
+            android:id="@+id/view_event_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Time" />
+
+        <TextView
+            android:id="@+id/view_event_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registration Link" />
+
+        <TextView
+            android:id="@+id/view_event_fees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fees" />
+
+        <TextView
+            android:id="@+id/view_event_loc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Event Location" />
+
+        <TextView
+            android:id="@+id/view_event_ussdc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USSDC Category" />
+
+        <TextView
+            android:id="@+id/view_event_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/view_edit_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Edit"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/view_delete_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Delete"
+                android:visibility="gone"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
