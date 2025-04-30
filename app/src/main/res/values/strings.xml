@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">EventU</string>
+    <string name="app_name">EventHive</string>
+    <string name="select_campus">Select Campus</string>
+    <string name="select_role">Select Role</string>
 
     <!-- Array of campuses -->
     <string-array name="campus_array">
+        <item>@string/select_campus</item>
         <item>Sg Long Campus</item>
         <item>Kampar Campus</item>
         <!-- Add more campuses as needed -->
@@ -10,6 +13,7 @@
 
     <!-- Array of roles -->
     <string-array name="role_array">
+        <item>@string/select_role</item>
         <item>Organizer</item>
         <item>Attendee</item>
         <!-- Add more roles as needed -->

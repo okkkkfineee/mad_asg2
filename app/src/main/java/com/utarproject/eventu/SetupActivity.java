@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.graphics.Color;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,16 +38,16 @@ public class SetupActivity extends AppCompatActivity {
         roleSpinner = findViewById(R.id.roleSpinner);
         saveButton = findViewById(R.id.saveButton);
 
-        // Set up campus options in the spinner (assuming a simple list of campuses)
+        // Set up campus options in the spinner with custom style
         ArrayAdapter<CharSequence> campusAdapter = ArrayAdapter.createFromResource(this,
-                R.array.campus_array, android.R.layout.simple_spinner_item);
-        campusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.campus_array, R.layout.spinner_item);
+        campusAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         campusSpinner.setAdapter(campusAdapter);
 
-        // Set up role options in the spinner (assuming a simple list of role)
+        // Set up role options in the spinner with custom style
         ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(this,
-                R.array.role_array, android.R.layout.simple_spinner_item);
-        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.role_array, R.layout.spinner_item);
+        roleAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         roleSpinner.setAdapter(roleAdapter);
 
         saveButton.setOnClickListener(v -> {
@@ -53,7 +55,8 @@ public class SetupActivity extends AppCompatActivity {
             String campus = campusSpinner.getSelectedItem().toString();
             String role = roleSpinner.getSelectedItem().toString();
 
-            if (!stuId.isEmpty() && !campus.isEmpty() && !role.isEmpty()) {
+            if (!stuId.isEmpty() && !campus.equals(getString(R.string.select_campus)) && 
+                !role.equals(getString(R.string.select_role))) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
                     String uid = firebaseUser.getUid();
@@ -61,7 +64,7 @@ public class SetupActivity extends AppCompatActivity {
                     db.collection("users").document(uid)
                             .update("stuId", stuId, "campus", campus, "role", role)
                             .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(SetupActivity.this, "Welcome back, " + name, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SetupActivity.this, "Welcome, " + name, Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(SetupActivity.this, HomeActivity.class));
                                 finish();
                             })
@@ -70,7 +73,7 @@ public class SetupActivity extends AppCompatActivity {
                             });
                 }
             } else {
-                Toast.makeText(SetupActivity.this, "Please enter valid student ID and campus", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SetupActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             }
         });
     }

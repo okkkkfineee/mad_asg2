@@ -1,22 +1,28 @@
- package com.utarproject.eventu;
+package com.utarproject.eventu;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.*;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-
 import com.google.firebase.auth.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
+    private TextView tvEventHive, tvSubtitle, tvTerms;
+    private SignInButton btnGoogleSignIn;
+    private static final long ANIMATION_DURATION = 1000;
+    private static final long ANIMATION_DELAY = 500;
 
+    // Login related fields
     private static final int RC_SIGN_IN = 1001;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -27,17 +33,67 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize views
+        tvEventHive = findViewById(R.id.tvEventHive);
+        tvSubtitle = findViewById(R.id.tvSubtitle);
+        btnGoogleSignIn = findViewById(R.id.btnGoogleSignIn);
+        tvTerms = findViewById(R.id.tvTerms);
+
+        // Set Google Sign In button text
+        btnGoogleSignIn.setSize(SignInButton.SIZE_WIDE);
+
+        // Initialize Firebase Auth and Firestore
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)) // very important!
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        findViewById(R.id.btnGoogleSignIn).setOnClickListener(v -> signIn());
+        // Start animations
+        startAnimationSequence();
+
+        // Set up click listener
+        btnGoogleSignIn.setOnClickListener(v -> signIn());
+    }
+
+    private void startAnimationSequence() {
+        // EventHive text animation
+        ObjectAnimator eventHiveFadeIn = ObjectAnimator.ofFloat(tvEventHive, "alpha", 0f, 1f);
+        eventHiveFadeIn.setDuration(ANIMATION_DURATION);
+
+        // Subtitle animation
+        ObjectAnimator subtitleFadeIn = ObjectAnimator.ofFloat(tvSubtitle, "alpha", 0f, 1f);
+        subtitleFadeIn.setDuration(ANIMATION_DURATION);
+
+        // Sign In button animation
+        ObjectAnimator buttonFadeIn = ObjectAnimator.ofFloat(btnGoogleSignIn, "alpha", 0f, 1f);
+        buttonFadeIn.setDuration(ANIMATION_DURATION);
+
+        // Terms text animation
+        ObjectAnimator termsFadeIn = ObjectAnimator.ofFloat(tvTerms, "alpha", 0f, 1f);
+        termsFadeIn.setDuration(ANIMATION_DURATION);
+
+        // Create animation sequence
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(eventHiveFadeIn)
+                .before(subtitleFadeIn);
+        animatorSet.play(subtitleFadeIn)
+                .before(buttonFadeIn);
+        animatorSet.play(buttonFadeIn)
+                .before(termsFadeIn);
+
+        // Add delays between animations
+        subtitleFadeIn.setStartDelay(ANIMATION_DELAY);
+        buttonFadeIn.setStartDelay(ANIMATION_DELAY);
+        termsFadeIn.setStartDelay(ANIMATION_DELAY);
+
+        // Start the animation sequence
+        animatorSet.start();
     }
 
     private void signIn() {
@@ -129,7 +185,4 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Error checking user: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
-
-
-}
-
+} 
