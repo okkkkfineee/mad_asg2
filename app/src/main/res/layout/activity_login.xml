@@ -2,52 +2,80 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_500">
+    android:background="@drawable/gradient_background">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="291dp"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="32dp">
 
-        <TextView
-            android:id="@+id/tvEventHive"
-            android:layout_width="wrap_content"
+        <!-- EventHive Title Container -->
+
+        <RelativeLayout
+            android:id="@+id/titleContainer"
+            android:layout_width="364dp"
             android:layout_height="wrap_content"
-            android:text="EventHive"
-            android:textColor="@android:color/white"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            android:alpha="0"/>
+            android:alpha="0">
+
+            <ImageView
+                android:id="@+id/ivEventHiveLogo"
+                android:layout_width="80sp"
+                android:layout_height="80sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
+                android:contentDescription="EventHive Logo"
+                android:src="@drawable/eventhive_logo" />
+
+            <TextView
+                android:id="@+id/tvEventHive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivEventHiveLogo"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-40dp"
+                android:text="EventHive"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:alpha="0"
+            android:gravity="center"
             android:text="All UTAR Events,\nin One App."
             android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:alpha="0"/>
+            android:textSize="16sp" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btnGoogleSignIn"
-            android:layout_width="250dp"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUtarSignIn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:alpha="0"/>
+            android:alpha="0"
+            android:background="@drawable/utar_signin_button_bg"
+            android:onClick="signIn"
+            android:padding="12dp"
+            android:text="Sign in with UTAR Email"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tvTerms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:alpha="0"
             android:text="By Continuing you agree to the Terms and Conditions."
             android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:alpha="0"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
 

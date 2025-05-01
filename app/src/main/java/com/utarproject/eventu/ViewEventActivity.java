@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import java.util.*;
 
-public class ViewEventActivity extends AppCompatActivity {
+public class ViewEventActivity extends BaseActivity {
 
     private TextView name, date, time, regTime, fees, desc, loc, ussdc;
     private Button editBtn, deleteBtn;
@@ -50,28 +50,8 @@ public class ViewEventActivity extends AppCompatActivity {
         editBtn = findViewById(R.id.view_edit_btn);
         deleteBtn = findViewById(R.id.view_delete_btn);
 
-        // Setup bottom navigation
-        bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.navigation_home);
-        bottomNav.setOnNavigationItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.navigation_home) {
-                return true;
-            } else if (itemId == R.id.navigation_interest) {
-                startActivity(new Intent(this, InterestActivity.class));
-                finish();
-                return true;
-            } else if (itemId == R.id.navigation_notification) {
-                startActivity(new Intent(this, NotificationActivity.class));
-                finish();
-                return true;
-            } else if (itemId == R.id.navigation_profile) {
-                startActivity(new Intent(this, ProfileDisplayActivity.class));
-                finish();
-                return true;
-            }
-            return false;
-        });
+        // Setup bottom navigation with home selected
+        setupBottomNavigation(R.id.navigation_home);
 
         // Get event ID from intent if it exists
         eventId = getIntent().getStringExtra("EVENT_ID");

@@ -3,20 +3,24 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/home_icon"
-        android:title="Home" />
+        android:title="Home"
+        android:checkable="true" />
 
     <item
         android:id="@+id/navigation_interest"
         android:icon="@drawable/love_icon"
-        android:title="Interest" />
+        android:title="Interest"
+        android:checkable="true" />
 
     <item
         android:id="@+id/navigation_notification"
         android:icon="@drawable/notification"
-        android:title="Notification" />
+        android:title="Notification"
+        android:checkable="true" />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/user"
-        android:title="Profile" />
+        android:title="Profile"
+        android:checkable="true" />
 </menu> 
