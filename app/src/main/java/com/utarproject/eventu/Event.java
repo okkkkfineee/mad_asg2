@@ -11,6 +11,7 @@ public class Event {
     private String eventDescription;
     private String eventUssdcCat;
     private String eventLocation;
+    private String documentId;
 
 
     // Empty constructor required for Firestore
@@ -30,6 +31,14 @@ public class Event {
     }
 
     // Getters and Setters
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
     public String getOrganizerId() {
 
         return organizerId;

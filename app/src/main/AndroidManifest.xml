@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EventU"
         tools:targetApi="31">
-
+        <activity android:name=".EventBrowsingActivity" />
+        <activity android:name=".EventDetailActivity" />
         <activity android:name=".ProfileDisplayActivity" />
         <activity android:name=".ViewEventActivity" />
         <activity android:name=".EditProfileActivity" />
@@ -25,10 +26,12 @@
         <activity android:name=".addEventActivity" />
         <activity android:name=".displayEventActivity" />
         <activity android:name=".editEventActivity" />
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
