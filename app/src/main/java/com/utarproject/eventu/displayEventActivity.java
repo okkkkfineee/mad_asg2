@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class displayEventActivity extends BaseActivity {
     private LinearLayout eventsContainer;
@@ -21,6 +25,7 @@ public class displayEventActivity extends BaseActivity {
     private FirebaseUser firebaseUser;
     private String currentUserId;
     private String currentUserRole;
+    private List<String> userInterests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class displayEventActivity extends BaseActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
+        userInterests = new ArrayList<>();
 
         // Setup bottom navigation with home selected
         setupBottomNavigation(R.id.navigation_home);
@@ -47,10 +53,29 @@ public class displayEventActivity extends BaseActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         currentUserRole = documentSnapshot.getString("role");
-                        loadEvents();
+                        loadUserInterests();
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed to load user info", Toast.LENGTH_SHORT).show());
+    }
+
+    private void loadUserInterests() {
+        db.collection("user_interests")
+                .document(currentUserId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> interests = (List<String>) documentSnapshot.get("eventIds");
+                        if (interests != null) {
+                            userInterests = interests;
+                        }
+                    }
+                    loadEvents();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to load interests", Toast.LENGTH_SHORT).show();
+                    loadEvents();
+                });
     }
 
     private void loadEvents() {
@@ -83,12 +108,60 @@ public class displayEventActivity extends BaseActivity {
         ((TextView) eventView.findViewById(R.id.eventUssdcCat)).setText("USSDC Category: " + eventDoc.getString("eventUssdcCat"));
         ((TextView) eventView.findViewById(R.id.eventLocation)).setText("Event Location: " + eventDoc.getString("eventLocation"));
 
+        ImageButton btnInterest = eventView.findViewById(R.id.btnInterest);
+        String eventId = eventDoc.getId();
+        boolean isInterested = userInterests.contains(eventId);
+        
+        // Set the initial icon state
+        btnInterest.setImageResource(isInterested ? R.drawable.filled_love_icon : R.drawable.love_icon);
+
+        // Handle interest button click
+        btnInterest.setOnClickListener(v -> toggleInterest(eventId, btnInterest));
+
         eventView.setOnClickListener(v -> {
             Intent intent = new Intent(this, ViewEventActivity.class);
-            intent.putExtra("EVENT_ID", eventDoc.getId());
+            intent.putExtra("EVENT_ID", eventId);
             startActivity(intent);
         });
 
         eventsContainer.addView(eventView);
+    }
+
+    private void toggleInterest(String eventId, ImageButton btnInterest) {
+        boolean isCurrentlyInterested = userInterests.contains(eventId);
+        
+        if (isCurrentlyInterested) {
+            userInterests.remove(eventId);
+        } else {
+            userInterests.add(eventId);
+        }
+
+        // Update UI immediately
+        btnInterest.setImageResource(userInterests.contains(eventId) ? 
+            R.drawable.filled_love_icon : R.drawable.love_icon);
+
+        // Update in Firebase
+        Map<String, Object> data = new HashMap<>();
+        data.put("eventIds", userInterests);
+
+        db.collection("user_interests")
+                .document(currentUserId)
+                .set(data)
+                .addOnSuccessListener(aVoid -> {
+                    String message = userInterests.contains(eventId) ? 
+                        "Added to interests" : "Removed from interests";
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Revert the local change if Firebase update fails
+                    if (isCurrentlyInterested) {
+                        userInterests.add(eventId);
+                    } else {
+                        userInterests.remove(eventId);
+                    }
+                    btnInterest.setImageResource(isCurrentlyInterested ? 
+                        R.drawable.filled_love_icon : R.drawable.love_icon);
+                    Toast.makeText(this, "Failed to update interests", Toast.LENGTH_SHORT).show();
+                });
     }
 }
