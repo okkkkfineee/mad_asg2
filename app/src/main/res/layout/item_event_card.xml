@@ -9,53 +9,71 @@
     app:cardElevation="4dp"
     app:cardCornerRadius="8dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/eventName"
+        <ImageButton
+            android:id="@+id/btnInterest"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/love_icon"
+            android:scaleType="fitCenter"
+            android:contentDescription="Add to interests" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event Name"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#000000" />
+            android:orientation="vertical"
+            android:layout_toStartOf="@id/btnInterest">
 
-        <TextView
-            android:id="@+id/eventDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Date"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/eventName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Name"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000000" />
 
-        <TextView
-            android:id="@+id/eventTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Time"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/eventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Date"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/eventFees"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Fees"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/eventTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Time"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/eventLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Event Location"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/eventFees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Fees"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/eventUssdcCat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="USSDC Category"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/eventLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Location"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/eventUssdcCat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="USSDC Category"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

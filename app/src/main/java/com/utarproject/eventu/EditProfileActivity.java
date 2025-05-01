@@ -121,7 +121,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         .update("campus", campus, "role", role, "phoneNo", phoneNo)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(EditProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditProfileActivity.this, HomeActivity.class); // Close the activity and return to the home screen
+                            Intent intent = new Intent(EditProfileActivity.this, ViewEventActivity.class); // Close the activity and return to the home screen
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         })

@@ -10,16 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ProfileDisplayActivity extends AppCompatActivity {
+public class ProfileDisplayActivity extends BaseActivity {
 
     private TextView nameTextView, studentIdTextView, emailTextView, phoneTextView, campusTextView, roleTextView;
-    private Button editProfileButton, createEventButton, displayEventButton, homeButton;
+    private Button editProfileButton, createEventButton, displayEventButton;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -44,7 +42,6 @@ public class ProfileDisplayActivity extends AppCompatActivity {
         editProfileButton = findViewById(R.id.editProfileButton);
         createEventButton = findViewById(R.id.createEventButton);
         displayEventButton = findViewById(R.id.displayEventButton);
-        homeButton = findViewById(R.id.homeButton);
 
         // Set the TextView fields to be read-only
         nameTextView.setFocusable(false);
@@ -63,26 +60,22 @@ public class ProfileDisplayActivity extends AppCompatActivity {
                             currentUser = documentSnapshot.toObject(User.class);
                             if (currentUser != null) {
                                 // Prepopulate the fields with the current user data
-                                nameTextView.setText("Name:\n\n" + "\t\t" + currentUser.getName());
-                                studentIdTextView.setText("Student ID:\n\n" + "\t\t" + currentUser.getStuId());
-                                emailTextView.setText("Email:\n\n" + "\t\t" + currentUser.getEmail());
-                                phoneTextView.setText("Phone Number:\n\n" + "\t\t" + currentUser.getPhoneNo());
-                                campusTextView.setText("Campus:\n\n" + "\t\t" + currentUser.getCampus());
-                                roleTextView.setText("Role:\n\n" + "\t\t" + currentUser.getRole());
+                                nameTextView.setText(currentUser.getName());
+                                studentIdTextView.setText(currentUser.getStuId());
+                                emailTextView.setText(currentUser.getEmail());
+                                phoneTextView.setText(currentUser.getPhoneNo());
+                                campusTextView.setText(currentUser.getCampus());
+                                roleTextView.setText(currentUser.getRole());
 
                                 // Show create button only for organizers
                                 if ("Organizer".equals(currentUser.getRole())) {
                                     createEventButton.setVisibility(View.VISIBLE);
                                     displayEventButton.setVisibility(View.VISIBLE);
                                     createEventButton.setOnClickListener(v -> {
-                                        // TODO: Navigate to create event activity
-                                        // Toast.makeText(ProfileDisplayActivity.this, "Create Event functionality coming soon!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(ProfileDisplayActivity.this, addEventActivity.class)); // Close the activity and return to the home screen
+                                        startActivity(new Intent(ProfileDisplayActivity.this, addEventActivity.class));
                                     });
                                     displayEventButton.setOnClickListener(v -> {
-                                        // TODO: Navigate to display event activity
-                                        // Toast.makeText(ProfileDisplayActivity.this, "Display Event functionality coming soon!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(ProfileDisplayActivity.this, displayEventActivity.class)); // Close the activity and return to the home screen
+                                        startActivity(new Intent(ProfileDisplayActivity.this, displayEventActivity.class));
                                     });
                                 }
                             }
@@ -93,19 +86,13 @@ public class ProfileDisplayActivity extends AppCompatActivity {
 
         // Save changes when the save button is clicked
         editProfileButton.setOnClickListener(v -> editProfile());
-        // Back to button to get  back to home screen
-        homeButton.setOnClickListener(v -> getBackHome());
+
+        // Setup bottom navigation with profile selected
+        setupBottomNavigation(R.id.navigation_profile);
     }
 
     private void editProfile() {
-        // Set an OnClickListener to navigate to the EditProfileActivity when clicked
         Intent intent = new Intent(ProfileDisplayActivity.this, EditProfileActivity.class);
-        startActivity(intent);
-    }
-
-    private void getBackHome() {
-        // Set an OnClickListener to navigate to the HomeActivity when clicked
-        Intent intent = new Intent(ProfileDisplayActivity.this, HomeActivity.class);
         startActivity(intent);
     }
 }

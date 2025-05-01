@@ -28,12 +28,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    
-    lintOptions {
+    lint {
         checkReleaseBuilds false
-        // To enable deprecated API warnings during the build process:
         warning 'Deprecation'
     }
+
 }
 
 dependencies {
