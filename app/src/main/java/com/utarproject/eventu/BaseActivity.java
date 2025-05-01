@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             Intent intent = null;
             if (item.getItemId() == R.id.navigation_home) {
-                intent = new Intent(this, ViewEventActivity.class);
+                intent = new Intent(this, displayEventActivity.class);
             } else if (item.getItemId() == R.id.navigation_interest) {
                 intent = new Intent(this, InterestActivity.class);
             } else if (item.getItemId() == R.id.navigation_notification) {

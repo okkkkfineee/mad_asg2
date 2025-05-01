@@ -8,14 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import java.util.List;
 
-public class displayEventActivity extends AppCompatActivity {
+public class displayEventActivity extends BaseActivity {
     private LinearLayout eventsContainer;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -32,6 +31,9 @@ public class displayEventActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
+
+        // Setup bottom navigation with home selected
+        setupBottomNavigation(R.id.navigation_home);
 
         if (firebaseUser != null) {
             currentUserId = firebaseUser.getUid();

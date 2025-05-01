@@ -60,12 +60,12 @@ public class ProfileDisplayActivity extends BaseActivity {
                             currentUser = documentSnapshot.toObject(User.class);
                             if (currentUser != null) {
                                 // Prepopulate the fields with the current user data
-                                nameTextView.setText("Name:\n\n" + "\t\t" + currentUser.getName());
-                                studentIdTextView.setText("Student ID:\n\n" + "\t\t" + currentUser.getStuId());
-                                emailTextView.setText("Email:\n\n" + "\t\t" + currentUser.getEmail());
-                                phoneTextView.setText("Phone Number:\n\n" + "\t\t" + currentUser.getPhoneNo());
-                                campusTextView.setText("Campus:\n\n" + "\t\t" + currentUser.getCampus());
-                                roleTextView.setText("Role:\n\n" + "\t\t" + currentUser.getRole());
+                                nameTextView.setText(currentUser.getName());
+                                studentIdTextView.setText(currentUser.getStuId());
+                                emailTextView.setText(currentUser.getEmail());
+                                phoneTextView.setText(currentUser.getPhoneNo());
+                                campusTextView.setText(currentUser.getCampus());
+                                roleTextView.setText(currentUser.getRole());
 
                                 // Show create button only for organizers
                                 if ("Organizer".equals(currentUser.getRole())) {

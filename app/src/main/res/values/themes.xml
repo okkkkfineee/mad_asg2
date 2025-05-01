@@ -10,8 +10,35 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <!-- ActionBar style -->
+        <item name="actionBarStyle">@style/Widget.EventHive.ActionBar</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Custom ActionBar style -->
+    <style name="Widget.EventHive.ActionBar" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="background">@drawable/gradient_background</item>
+        <item name="titleTextStyle">@style/TextAppearance.EventHive.ActionBar.Title</item>
+    </style>
+
+    <!-- ActionBar title text style -->
+    <style name="TextAppearance.EventHive.ActionBar.Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Login Activity theme -->
+    <style name="Theme.EventHive.Login" parent="Theme.EventHive">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <!-- Splash Screen theme without ActionBar -->
