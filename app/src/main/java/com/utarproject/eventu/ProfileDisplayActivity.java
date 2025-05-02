@@ -10,6 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,16 +22,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ProfileDisplayActivity extends BaseActivity {
 
     private TextView nameTextView, studentIdTextView, emailTextView, phoneTextView, campusTextView, roleTextView;
-    private Button editProfileButton, createEventButton, displayEventButton;
+    private Button editProfileButton, createEventButton, displayEventButton, logoutButton;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private User currentUser;
+    private GoogleSignInClient googleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_display);
+
+        // Initialize Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -42,6 +55,7 @@ public class ProfileDisplayActivity extends BaseActivity {
         editProfileButton = findViewById(R.id.editProfileButton);
         createEventButton = findViewById(R.id.createEventButton);
         displayEventButton = findViewById(R.id.displayEventButton);
+        logoutButton = findViewById(R.id.logoutButton);
 
         // Set the TextView fields to be read-only
         nameTextView.setFocusable(false);
@@ -87,8 +101,39 @@ public class ProfileDisplayActivity extends BaseActivity {
         // Save changes when the save button is clicked
         editProfileButton.setOnClickListener(v -> editProfile());
 
+        // Setup logout button
+        logoutButton.setOnClickListener(v -> showLogoutConfirmation());
+
         // Setup bottom navigation with profile selected
         setupBottomNavigation(R.id.navigation_profile);
+    }
+
+    private void showLogoutConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes", (dialog, which) -> performLogout())
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void performLogout() {
+        // Sign out from Google and revoke access to force account chooser next time
+        googleSignInClient.signOut().addOnCompleteListener(this, task -> {
+            googleSignInClient.revokeAccess().addOnCompleteListener(revokeTask -> {
+                // Sign out from Firebase
+                mAuth.signOut();
+                
+                // Show signout message
+                Toast.makeText(this, "Sign out successful", Toast.LENGTH_SHORT).show();
+
+                // Redirect to login activity
+                Intent intent = new Intent(ProfileDisplayActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
+        });
     }
 
     private void editProfile() {
