@@ -36,10 +36,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.messageText.setText(notification.getMessage());
         holder.timeText.setText(dateFormat.format(notification.getTimestamp()));
 
-        // Set click listener to open the event details
+        // Set click listener to open the event in EventBrowsingActivity
         holder.itemView.setOnClickListener(v -> {
             if (notification.getEventId() != null) {
-                Intent intent = new Intent(v.getContext(), displayEventActivity.class);
+                Intent intent = new Intent(v.getContext(), EventBrowsingActivity.class);
                 intent.putExtra("EVENT_ID", notification.getEventId());
                 intent.putExtra("HIGHLIGHT_EVENT", true);
                 v.getContext().startActivity(intent);

@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,12 +52,18 @@ public class EventBrowsingActivity extends BaseActivity {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private DocumentSnapshot lastVisible = null;
+    private String highlightEventId = null;
+    private boolean shouldHighlightEvent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_browsing);
+
+        // Get highlight event info from intent
+        highlightEventId = getIntent().getStringExtra("EVENT_ID");
+        shouldHighlightEvent = getIntent().getBooleanExtra("HIGHLIGHT_EVENT", false);
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
@@ -84,7 +91,7 @@ public class EventBrowsingActivity extends BaseActivity {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
                             && totalItemCount >= PAGE_SIZE) {
-                        applyFilter(currentEntryFee, currentCampus, currentUssdc, currentDateFrom, currentDateTo, currentSearchText, false);
+                        loadMoreEvents();
                     }
                 }
             }
@@ -114,7 +121,107 @@ public class EventBrowsingActivity extends BaseActivity {
             }
         });
 
-        applyFilter(null, null, null, "", "", "", true);
+        loadEvents();
+    }
+
+    private void loadEvents() {
+        if (shouldHighlightEvent && highlightEventId != null) {
+            // First load the highlighted event
+            eventsRef.document(highlightEventId).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Event event = documentSnapshot.toObject(Event.class);
+                            if (event != null) {
+                                event.setDocumentId(documentSnapshot.getId());
+                                event.setHighlighted(true);
+                                eventAdapter.clearEvents();
+                                eventAdapter.addEvent(event);
+                                
+                                // Then load other events
+                                loadOtherEvents(event);
+                            }
+                        } else {
+                            // If highlighted event doesn't exist, just load all events
+                            applyFilter(null, null, null, "", "", "", true);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // If failed to load highlight event, just load all events
+                        applyFilter(null, null, null, "", "", "", true);
+                    });
+        } else {
+            applyFilter(null, null, null, "", "", "", true);
+        }
+    }
+
+    private void loadOtherEvents(Event highlightedEvent) {
+        Query query = eventsRef
+                .whereNotEqualTo(FieldPath.documentId(), highlightedEvent.getDocumentId())
+                .limit(PAGE_SIZE);
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Event> newEvents = new ArrayList<>();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                Event event = doc.toObject(Event.class);
+                event.setDocumentId(doc.getId());
+                event.setHighlighted(false);
+                newEvents.add(event);
+            }
+
+            if (!newEvents.isEmpty()) {
+                lastVisible = queryDocumentSnapshots.getDocuments()
+                        .get(queryDocumentSnapshots.size() - 1);
+            }
+
+            if (newEvents.size() < PAGE_SIZE) {
+                isLastPage = true;
+            }
+
+            eventAdapter.addEvents(newEvents);
+            toggleNoEventsText();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Failed to fetch events. Try again later.", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void loadMoreEvents() {
+        if (isLoading || isLastPage) return;
+        isLoading = true;
+
+        Query query = eventsRef.limit(PAGE_SIZE);
+        if (lastVisible != null) {
+            query = query.startAfter(lastVisible);
+        }
+
+        if (highlightEventId != null) {
+            query = query.whereNotEqualTo(FieldPath.documentId(), highlightEventId);
+        }
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            isLoading = false;
+            List<Event> newEvents = new ArrayList<>();
+            for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                Event event = doc.toObject(Event.class);
+                event.setDocumentId(doc.getId());
+                event.setHighlighted(false);
+                newEvents.add(event);
+            }
+
+            if (!newEvents.isEmpty()) {
+                lastVisible = queryDocumentSnapshots.getDocuments()
+                        .get(queryDocumentSnapshots.size() - 1);
+            }
+
+            if (newEvents.size() < PAGE_SIZE) {
+                isLastPage = true;
+            }
+
+            eventAdapter.addEvents(newEvents);
+            toggleNoEventsText();
+        }).addOnFailureListener(e -> {
+            isLoading = false;
+            Toast.makeText(this, "Failed to fetch more events.", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void showFilterDialog(EditText searchBar) {

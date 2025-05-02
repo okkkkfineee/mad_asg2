@@ -12,10 +12,12 @@ public class Event {
     private String eventUssdcCat;
     private String eventLocation;
     private String documentId;
-
+    private boolean highlighted;
 
     // Empty constructor required for Firestore
-    public Event() {}
+    public Event() {
+        this.highlighted = false;
+    }
 
     public Event(String organizerId, String eventName, String eventDate, String registrationLink, String eventTimeStart, String eventTimeEnd, String eventFees, String eventDescription, String eventLocation, String eventUssdcCat) {
         this.organizerId = organizerId;
@@ -28,6 +30,7 @@ public class Event {
         this.eventDescription = eventDescription;
         this.eventLocation = eventLocation;
         this.eventUssdcCat = eventUssdcCat;
+        this.highlighted = false;
     }
 
     // Getters and Setters
@@ -40,7 +43,6 @@ public class Event {
     }
 
     public String getOrganizerId() {
-
         return organizerId;
     }
 
@@ -118,5 +120,13 @@ public class Event {
 
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
+    }
+
+    public boolean isHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean highlighted) {
+        this.highlighted = highlighted;
     }
 } 
