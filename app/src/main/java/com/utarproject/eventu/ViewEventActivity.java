@@ -138,15 +138,20 @@ public class ViewEventActivity extends BaseActivity {
                     .setMessage("Are you sure you want to delete this event?")
                     .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            // Delete the event and its notifications
                             db.collection("events").document(eventId)
                                     .delete()
                                     .addOnSuccessListener(unused -> {
+                                        // Delete associated notifications
+                                        NotificationHelper.deleteEventNotifications(eventId);
+                                        
                                         Toast.makeText(ViewEventActivity.this, "Event deleted", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(ViewEventActivity.this, ProfileDisplayActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                     })
-                                    .addOnFailureListener(e -> Toast.makeText(ViewEventActivity.this, "Failed to delete event", Toast.LENGTH_SHORT).show());
+                                    .addOnFailureListener(e -> Toast.makeText(ViewEventActivity.this, 
+                                        "Failed to delete event", Toast.LENGTH_SHORT).show());
                         }
                     })
                     .setNegativeButton("No", null)

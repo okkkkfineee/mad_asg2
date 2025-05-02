@@ -174,19 +174,36 @@ public class addEventActivity extends AppCompatActivity {
             eventTimeStart,
             eventTimeEnd,
             eventFees,
-            eventDescription, eventLocation, eventUssdcCat
-
+            eventDescription,
+            eventLocation,
+            eventUssdcCat
         );
 
         // Save event to Firestore
         db.collection("events")
             .add(event)
             .addOnSuccessListener(documentReference -> {
+                // Get the organizer's name to use in the notification
+                db.collection("users").document(currentUser.getUid())
+                    .get()
+                    .addOnSuccessListener(userDoc -> {
+                        String organizerName = userDoc.getString("name");
+                        if (organizerName == null) organizerName = "An organizer";
+                        
+                        // Create notification for all users
+                        NotificationHelper.createEventNotification(
+                            documentReference.getId(),
+                            eventName,
+                            organizerName,
+                            addEventActivity.this
+                        );
+                    });
+
                 Toast.makeText(addEventActivity.this, 
                     "Event created successfully", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(addEventActivity.this, ProfileDisplayActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent); // Close the activity and return to the Event Display Activity screen
+                startActivity(intent);
             })
             .addOnFailureListener(e -> {
                 Toast.makeText(addEventActivity.this, 

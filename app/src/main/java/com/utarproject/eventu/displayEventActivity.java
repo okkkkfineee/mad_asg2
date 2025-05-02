@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -20,12 +21,14 @@ import java.util.Map;
 
 public class displayEventActivity extends BaseActivity {
     private LinearLayout eventsContainer;
+    private ScrollView scrollView;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
     private String currentUserId;
     private String currentUserRole;
     private List<String> userInterests;
+    private String highlightEventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +36,15 @@ public class displayEventActivity extends BaseActivity {
         setContentView(R.layout.activity_user_events);
 
         eventsContainer = findViewById(R.id.eventsContainer);
+        scrollView = findViewById(R.id.scrollView);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         userInterests = new ArrayList<>();
 
+        // Get highlight event ID if passed
+        highlightEventId = getIntent().getStringExtra("EVENT_ID");
+        
         // Setup bottom navigation with home selected
         setupBottomNavigation(R.id.navigation_home);
 
@@ -100,6 +107,7 @@ public class displayEventActivity extends BaseActivity {
 
     private void displayEvent(DocumentSnapshot eventDoc, boolean isOrganizerOfThisEvent) {
         View eventView = getLayoutInflater().inflate(R.layout.item_event_card, null);
+        String eventId = eventDoc.getId();
 
         ((TextView) eventView.findViewById(R.id.eventName)).setText(eventDoc.getString("eventName"));
         ((TextView) eventView.findViewById(R.id.eventDate)).setText("Date: " + eventDoc.getString("eventDate"));
@@ -109,7 +117,6 @@ public class displayEventActivity extends BaseActivity {
         ((TextView) eventView.findViewById(R.id.eventLocation)).setText("Event Location: " + eventDoc.getString("eventLocation"));
 
         ImageButton btnInterest = eventView.findViewById(R.id.btnInterest);
-        String eventId = eventDoc.getId();
         boolean isInterested = userInterests.contains(eventId);
         
         // Set the initial icon state
@@ -123,6 +130,20 @@ public class displayEventActivity extends BaseActivity {
             intent.putExtra("EVENT_ID", eventId);
             startActivity(intent);
         });
+
+        // Highlight the event if it matches the highlightEventId
+        if (eventId.equals(highlightEventId) && getIntent().getBooleanExtra("HIGHLIGHT_EVENT", false)) {
+            CardView cardView = eventView.findViewById(R.id.eventCard);
+            cardView.setCardBackgroundColor(getResources().getColor(R.color.highlight_color, getTheme()));
+            // Scroll to the highlighted event
+            eventsContainer.addView(eventView);
+            eventView.post(() -> {
+                int[] location = new int[2];
+                eventView.getLocationInWindow(location);
+                scrollView.smoothScrollTo(0, location[1] - 100); // Subtract 100 to show some content above
+            });
+            return;
+        }
 
         eventsContainer.addView(eventView);
     }
