@@ -53,7 +53,7 @@
         android:background="@drawable/back_btn_bg"
         android:padding="13dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_fav"
+        android:src="@drawable/love_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shareBtn"
         app:tint="@android:color/white" />
