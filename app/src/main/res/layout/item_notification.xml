@@ -19,7 +19,7 @@
             android:layout_height="24dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/notification"
+            android:src="@drawable/notification_filled"
             android:contentDescription="Notification icon"/>
 
         <LinearLayout

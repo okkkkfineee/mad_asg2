@@ -3,9 +3,11 @@ package com.utarproject.eventu;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +21,7 @@ public class NotificationActivity extends BaseActivity {
     private static final String TAG = "NotificationActivity";
     private RecyclerView notificationsRecyclerView;
     private TextView emptyStateText;
+    private Button clearAllButton;
     private NotificationAdapter adapter;
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
@@ -36,12 +39,16 @@ public class NotificationActivity extends BaseActivity {
         // Initialize views
         notificationsRecyclerView = findViewById(R.id.notificationsRecyclerView);
         emptyStateText = findViewById(R.id.emptyStateText);
+        clearAllButton = findViewById(R.id.clearAllButton);
         
         // Setup RecyclerView
         notifications = new ArrayList<>();
         adapter = new NotificationAdapter(notifications);
         notificationsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         notificationsRecyclerView.setAdapter(adapter);
+
+        // Setup clear all button
+        clearAllButton.setOnClickListener(v -> clearAllNotifications());
 
         // Setup bottom navigation
         setupBottomNavigation(R.id.navigation_notification);
@@ -78,6 +85,47 @@ public class NotificationActivity extends BaseActivity {
                         showEmptyState("No notifications yet");
                     }
                 });
+    }
+
+    private void clearAllNotifications() {
+        if (currentUser == null || notifications.isEmpty()) {
+            return;
+        }
+
+        // Show confirmation dialog
+        new AlertDialog.Builder(this)
+            .setTitle("Clear All Notifications")
+            .setMessage("Are you sure you want to clear all notifications?")
+            .setPositiveButton("Clear", (dialog, which) -> {
+                // Get all notification IDs for the current user
+                db.collection("notifications")
+                    .whereEqualTo("userId", currentUser.getUid())
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        // Create a batch operation
+                        WriteBatch batch = db.batch();
+                        
+                        // Add delete operations to batch
+                        for (DocumentSnapshot document : queryDocumentSnapshots) {
+                            batch.delete(document.getReference());
+                        }
+                        
+                        // Execute the batch
+                        batch.commit()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(this, "All notifications cleared", Toast.LENGTH_SHORT).show();
+                                notifications.clear();
+                                adapter.notifyDataSetChanged();
+                                showEmptyState("No notifications yet");
+                            })
+                            .addOnFailureListener(e -> 
+                                Toast.makeText(this, "Failed to clear notifications", Toast.LENGTH_SHORT).show());
+                    })
+                    .addOnFailureListener(e -> 
+                        Toast.makeText(this, "Failed to clear notifications", Toast.LENGTH_SHORT).show());
+            })
+            .setNegativeButton("Cancel", null)
+            .show();
     }
 
     private void showEmptyState(String message) {
