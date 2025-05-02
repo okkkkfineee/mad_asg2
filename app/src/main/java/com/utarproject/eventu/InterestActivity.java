@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
@@ -39,7 +38,6 @@ public class InterestActivity extends BaseActivity {
         firebaseUser = mAuth.getCurrentUser();
         userInterests = new ArrayList<>();
 
-        // Add debug logging for authentication status
         if (firebaseUser != null) {
             Log.d(TAG, "User is signed in with email: " + firebaseUser.getEmail());
             Log.d(TAG, "User ID: " + firebaseUser.getUid());
@@ -47,7 +45,6 @@ public class InterestActivity extends BaseActivity {
             Log.e(TAG, "No user is signed in!");
         }
 
-        // Setup bottom navigation with interest selected
         setupBottomNavigation(R.id.navigation_interest);
 
         if (firebaseUser != null) {
@@ -68,11 +65,13 @@ public class InterestActivity extends BaseActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     Log.d(TAG, "Successfully accessed user_interests document");
                     if (documentSnapshot.exists()) {
-                        Log.d(TAG, "Document exists");
                         List<String> interests = (List<String>) documentSnapshot.get("eventIds");
                         if (interests != null && !interests.isEmpty()) {
                             Log.d(TAG, "Found " + interests.size() + " interests");
-                            userInterests = interests;
+
+                            userInterests.clear();
+                            userInterests.addAll(interests);
+
                             loadInterestedEvents();
                         } else {
                             Log.d(TAG, "No interests found in document");
@@ -160,7 +159,7 @@ public class InterestActivity extends BaseActivity {
             btnInterest.setOnClickListener(v -> removeFromInterests(eventId, eventView));
 
             eventView.setOnClickListener(v -> {
-                Intent intent = new Intent(this, ViewEventActivity.class);
+                Intent intent = new Intent(this, EventDetailActivity.class);
                 intent.putExtra("EVENT_ID", eventId);
                 startActivity(intent);
             });
@@ -202,13 +201,4 @@ public class InterestActivity extends BaseActivity {
                     Toast.makeText(this, "Failed to update interests: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (firebaseUser != null) {
-            Log.d(TAG, "Refreshing interests on resume");
-            loadUserInterests();
-        }
-    }
-} 
+}

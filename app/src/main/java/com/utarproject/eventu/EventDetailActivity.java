@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,10 +35,17 @@ public class EventDetailActivity extends AppCompatActivity {
         TextView ussdcText = findViewById(R.id.ussdcText);
         TextView descriptionText = findViewById(R.id.descriptionText);
         Button registerButton = findViewById(R.id.registerButton);
-
         ImageButton backBtn = findViewById(R.id.backBtn);
         ImageButton shareBtn = findViewById(R.id.shareBtn);
-        ImageButton favBtn = findViewById(R.id.favBtn);
+        ImageButton interestBtn = findViewById(R.id.interestBtn);
+
+        boolean[] isInterested = {false};
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String eventId = getIntent().getStringExtra("EVENT_ID");
+        if (eventId == null) {
+            return;
+        }
 
         // Back button action
         backBtn.setOnClickListener(v -> {
@@ -47,15 +54,51 @@ public class EventDetailActivity extends AppCompatActivity {
             finish();
         });
 
-        // Fav button action
-        // TODO: add favourite button features
-        favBtn.setOnClickListener(v -> onBackPressed());
+        // Interest button action
+        db.collection("user_interests").document(userId).get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                java.util.List<String> interests = (java.util.List<String>) snapshot.get("eventIds");
+                if (interests != null && interests.contains(eventId)) {
+                    isInterested[0] = true;
+                    interestBtn.setImageResource(R.drawable.filled_love_icon);
+                }
+            }
+        });
 
-        String eventId = getIntent().getStringExtra("EVENT_ID");
-        if (eventId == null) {
-            return;
-        }
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Interest button toggle logic
+        interestBtn.setOnClickListener(v -> {
+            if (isInterested[0]) {
+                db.collection("user_interests").document(userId)
+                        .update("eventIds", FieldValue.arrayRemove(eventId))
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "Removed from Interests", Toast.LENGTH_SHORT).show();
+                            interestBtn.setImageResource(R.drawable.love_icon);
+                            isInterested[0] = false;
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Error removing interest", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                // Add interest
+                db.collection("user_interests").document(userId)
+                        .update("eventIds", FieldValue.arrayUnion(eventId))
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "Added to Interests", Toast.LENGTH_SHORT).show();
+                            interestBtn.setImageResource(R.drawable.filled_love_icon);
+                            isInterested[0] = true;
+                        })
+                        .addOnFailureListener(e -> {
+                            java.util.Map<String, Object> data = new java.util.HashMap<>();
+                            data.put("eventIds", java.util.Arrays.asList(eventId));
+                            db.collection("user_interests").document(userId).set(data)
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(this, "Added to Interests", Toast.LENGTH_SHORT).show();
+                                        interestBtn.setImageResource(R.drawable.filled_love_icon);
+                                        isInterested[0] = true;
+                                    });
+                        });
+            }
+        });
 
         db.collection("events").document(eventId).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {

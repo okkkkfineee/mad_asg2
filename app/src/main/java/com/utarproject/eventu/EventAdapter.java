@@ -65,6 +65,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             eventDate.setText(event.getEventDate());
         }
     }
+
+    public void addEvents(List<Event> newEvents) {
+        events.addAll(newEvents);
+        notifyDataSetChanged();
+    }
+
+    public void clearEvents() {
+        events.clear();
+        notifyDataSetChanged();
+    }
 }
 
 

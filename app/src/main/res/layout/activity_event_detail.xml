@@ -42,9 +42,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@android:color/white" />
 
-    <!-- Star Button -->
+    <!-- Interest Button -->
     <ImageButton
-        android:id="@+id/favBtn"
+        android:id="@+id/interestBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:textSize="28sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <!-- Organizer -->
@@ -98,6 +99,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/event_details_details"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -239,6 +241,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/event_details_event_text"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView

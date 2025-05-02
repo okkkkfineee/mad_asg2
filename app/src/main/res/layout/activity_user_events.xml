@@ -5,6 +5,24 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <FrameLayout
+        android:id="@+id/noEventsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation">
+
+        <TextView
+            android:id="@+id/noEventsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No events created."
+            android:textSize="18sp"
+            android:textColor="@android:color/darker_gray"
+            android:padding="16dp"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"

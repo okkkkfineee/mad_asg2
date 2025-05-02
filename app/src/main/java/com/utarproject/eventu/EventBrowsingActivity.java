@@ -18,15 +18,12 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -37,7 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class EventBrowsingActivity extends AppCompatActivity {
+public class EventBrowsingActivity extends BaseActivity {
 
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
@@ -50,6 +47,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
     private EventAdapter eventAdapter;
     private Button selectedEntryFeeButton = null;
     private Button selectedCampusButton = null;
+    private static final int PAGE_SIZE = 5;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private DocumentSnapshot lastVisible = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class EventBrowsingActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
 
+        setupBottomNavigation(R.id.navigation_home);
+
         ImageButton filterButton = findViewById(R.id.filterButton);
         EditText searchInput = findViewById(R.id.searchInput);
 
@@ -67,16 +70,31 @@ public class EventBrowsingActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.eventRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@androidx.annotation.NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager != null && !isLoading && !isLastPage) {
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE) {
+                        applyFilter(currentEntryFee, currentCampus, currentUssdc, currentDateFrom, currentDateTo, currentSearchText, false);
+                    }
+                }
+            }
+        });
 
         eventAdapter = new EventAdapter(new ArrayList<>(), event -> {
-            eventsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    String documentId = document.getId();
-                    Intent intent = new Intent(this, EventDetailActivity.class);
-                    intent.putExtra("EVENT_ID", documentId);
-                    startActivity(intent);
-                }
-            });
+            String documentId = event.getDocumentId();
+            Intent intent = new Intent(this, EventDetailActivity.class);
+            intent.putExtra("EVENT_ID", documentId);
+            startActivity(intent);
         });
         recyclerView.setAdapter(eventAdapter);
 
@@ -92,11 +110,11 @@ public class EventBrowsingActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 currentSearchText = s.toString().trim();
-                applyFilter(currentEntryFee, currentCampus, currentUssdc, currentDateFrom, currentDateTo, currentSearchText);
+                applyFilter(currentEntryFee, currentCampus, currentUssdc, currentDateFrom, currentDateTo, currentSearchText, true);
             }
         });
 
-        applyFilter(null, null, null, "", "", "");
+        applyFilter(null, null, null, "", "", "", true);
     }
 
     private void showFilterDialog(EditText searchBar) {
@@ -173,7 +191,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
             String dateToStr = dateTo.getText().toString().trim();
             String searchText = searchBar.getText().toString().trim();
 
-            applyFilter(entryFee, campus, ussdc, dateFromStr, dateToStr, searchText);
+            applyFilter(entryFee, campus, ussdc, dateFromStr, dateToStr, searchText, true);
             dialog.dismiss();
         });
 
@@ -196,7 +214,7 @@ public class EventBrowsingActivity extends AppCompatActivity {
             currentDateTo = "";
             currentSearchText = "";
 
-            applyFilter(null, null, null, "", "", searchBar.getText().toString().trim());
+            applyFilter(null, null, null, "", "", searchBar.getText().toString().trim(), true);
             dialog.dismiss();
         });
 
@@ -262,31 +280,29 @@ public class EventBrowsingActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void applyFilter(String entryFee, String campus, String ussdc, String dateFrom, String dateTo, String searchText) {
+    private void applyFilter(String entryFee, String campus, String ussdc, String dateFrom, String dateTo, String searchText, boolean clearResults) {
         currentEntryFee = entryFee;
         currentCampus = campus;
         currentUssdc = ussdc;
         currentDateFrom = dateFrom;
         currentDateTo = dateTo;
         currentSearchText = searchText;
+
         Query query = eventsRef;
 
-        // entry fee filter
+        // Apply filters
         if (currentEntryFee != null && !currentEntryFee.isEmpty()) {
             query = query.whereEqualTo("eventFees", currentEntryFee);
         }
 
-        // campus filter
         if (currentCampus != null && !currentCampus.isEmpty()) {
             query = query.whereEqualTo("eventLocation", currentCampus);
         }
 
-        // ussdc category filter
         if (currentUssdc != null && !currentUssdc.isEmpty()) {
             query = query.whereEqualTo("eventUssdcCat", currentUssdc);
         }
 
-        // date filters (from and to)
         if (currentDateFrom != null && !currentDateFrom.isEmpty()) {
             Date fromDateObj = parseFirestoreDate(currentDateFrom);
             if (fromDateObj != null) {
@@ -301,37 +317,62 @@ public class EventBrowsingActivity extends AppCompatActivity {
             }
         }
 
-        // search text filter
         if (currentSearchText != null && !currentSearchText.isEmpty()) {
             query = query.whereGreaterThanOrEqualTo("eventName", currentSearchText)
-                    .whereLessThanOrEqualTo("eventName", currentSearchText + "\uf8ff"); // This allows for search text to be case insensitive
+                    .whereLessThanOrEqualTo("eventName", currentSearchText + "\uf8ff");
         }
 
+        // Pagination
+        query = query.limit(PAGE_SIZE);
+        if (!clearResults && lastVisible != null) {
+            query = query.startAfter(lastVisible);
+        }
+
+        isLoading = true;
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Event> filteredEvents = new ArrayList<>();
+            isLoading = false;
+
+            if (clearResults) {
+                eventAdapter.clearEvents();
+                lastVisible = null;
+                isLastPage = false;
+            }
+
+            List<Event> newEvents = new ArrayList<>();
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 Event event = doc.toObject(Event.class);
-                filteredEvents.add(event);
+                event.setDocumentId(doc.getId());
+                newEvents.add(event);
             }
-            updateEventList(filteredEvents);
+
+            if (!newEvents.isEmpty()) {
+                lastVisible = queryDocumentSnapshots.getDocuments()
+                        .get(queryDocumentSnapshots.size() - 1);
+            }
+
+            if (newEvents.size() < PAGE_SIZE) {
+                isLastPage = true;
+            }
+
+            eventAdapter.addEvents(newEvents);
+            toggleNoEventsText();
         }).addOnFailureListener(e -> {
+            isLoading = false;
             Toast.makeText(this, "Failed to fetch events. Try again later.", Toast.LENGTH_SHORT).show();
         });
     }
 
-
     private Date parseFirestoreDate(String dateStr) {
         try {
-            return new java.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(dateStr);
+            return new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(dateStr);
         } catch (Exception e) {
             return null;
         }
     }
 
-    private void updateEventList(List<Event> events) {
-        eventAdapter.setEvents(events);
+    private void toggleNoEventsText() {
         TextView noEventsText = findViewById(R.id.noEventsText);
-        if (events.isEmpty()) {
+        if (eventAdapter.getItemCount() == 0) {
             noEventsText.setVisibility(View.VISIBLE);
         } else {
             noEventsText.setVisibility(View.GONE);

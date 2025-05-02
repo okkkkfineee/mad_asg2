@@ -65,6 +65,8 @@ public class SetupActivity extends AppCompatActivity {
                 if (firebaseUser != null) {
                     String uid = firebaseUser.getUid();
                     String name = firebaseUser.getDisplayName();
+                    String email = firebaseUser.getEmail();
+                    String phone = "-";
 
                     // Check if user document exists
                     db.collection("users").document(uid).get()
@@ -72,7 +74,14 @@ public class SetupActivity extends AppCompatActivity {
                                 if (documentSnapshot.exists()) {
                                     // Document exists, update user info
                                     db.collection("users").document(uid)
-                                            .update("stuId", stuId, "campus", campus, "role", role)
+                                            .update(
+                                                    "stuId", stuId,
+                                                    "campus", campus,
+                                                    "role", role,
+                                                    "name", name,
+                                                    "email", email,
+                                                    "phoneNo", phone
+                                            )
                                             .addOnSuccessListener(aVoid -> {
                                                 Toast.makeText(SetupActivity.this, "Welcome, " + name, Toast.LENGTH_SHORT).show();
                                                 startActivity(new Intent(SetupActivity.this, EventBrowsingActivity.class));
@@ -82,11 +91,14 @@ public class SetupActivity extends AppCompatActivity {
                                                 Toast.makeText(SetupActivity.this, "Error updating user info", Toast.LENGTH_SHORT).show();
                                             });
                                 } else {
-                                    // Document doesn't exist, set user data
+                                    // Document doesn't exist, set ALL user data
                                     Map<String, Object> userData = new HashMap<>();
                                     userData.put("stuId", stuId);
                                     userData.put("campus", campus);
                                     userData.put("role", role);
+                                    userData.put("name", name);
+                                    userData.put("email", email);
+                                    userData.put("phoneNo", phone);
 
                                     db.collection("users").document(uid)
                                             .set(userData, SetOptions.merge())

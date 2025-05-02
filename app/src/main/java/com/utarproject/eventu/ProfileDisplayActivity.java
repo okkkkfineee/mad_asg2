@@ -75,7 +75,7 @@ public class ProfileDisplayActivity extends BaseActivity {
                                         startActivity(new Intent(ProfileDisplayActivity.this, addEventActivity.class));
                                     });
                                     displayEventButton.setOnClickListener(v -> {
-                                        startActivity(new Intent(ProfileDisplayActivity.this, EventBrowsingActivity.class));
+                                        startActivity(new Intent(ProfileDisplayActivity.this, displayEventActivity.class));
                                     });
                                 }
                             }
