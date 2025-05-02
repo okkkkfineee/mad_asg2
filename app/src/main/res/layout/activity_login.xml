@@ -16,17 +16,18 @@
 
         <RelativeLayout
             android:id="@+id/titleContainer"
-            android:layout_width="364dp"
+            android:layout_width="366dp"
             android:layout_height="wrap_content"
             android:alpha="0">
 
             <ImageView
                 android:id="@+id/ivEventHiveLogo"
-                android:layout_width="80sp"
-                android:layout_height="80sp"
+                android:layout_width="25sp"
+                android:layout_height="25sp"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="40dp"
+                android:layout_toEndOf="@id/tvEventHive"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="12dp"
                 android:contentDescription="EventHive Logo"
                 android:src="@drawable/eventhive_logo" />
 
@@ -34,9 +35,7 @@
                 android:id="@+id/tvEventHive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ivEventHiveLogo"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="-40dp"
                 android:text="EventHive"
                 android:textColor="@android:color/white"
                 android:textSize="40sp"
