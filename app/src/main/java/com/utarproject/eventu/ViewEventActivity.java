@@ -50,11 +50,12 @@ public class ViewEventActivity extends BaseActivity {
         editBtn = findViewById(R.id.view_edit_btn);
         deleteBtn = findViewById(R.id.view_delete_btn);
 
-        // Setup bottom navigation with home selected
-        setupBottomNavigation(R.id.navigation_home);
-
         // Get event ID from intent if it exists
         eventId = getIntent().getStringExtra("EVENT_ID");
+        boolean fromCreatedEvents = getIntent().getBooleanExtra("FROM_CREATED_EVENTS", false);
+
+        // Setup bottom navigation with appropriate selection
+        setupBottomNavigation(fromCreatedEvents ? R.id.navigation_profile : R.id.navigation_home);
 
         if (firebaseUser != null) {
             currentUserId = firebaseUser.getUid();

@@ -12,13 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends BaseActivity {
 
     private TextView nameTextView, studentIdTextView, emailTextView;
     private EditText phoneNoEditText;
@@ -33,6 +32,9 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        // Setup bottom navigation with profile selected
+        setupBottomNavigation(R.id.navigation_profile);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -121,9 +123,10 @@ public class EditProfileActivity extends AppCompatActivity {
                         .update("campus", campus, "role", role, "phoneNo", phoneNo)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(EditProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(EditProfileActivity.this, ProfileDisplayActivity.class); // Close the activity and return to the home screen
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            // Start ProfileDisplayActivity instead of just finishing
+                            Intent intent = new Intent(EditProfileActivity.this, ProfileDisplayActivity.class);
                             startActivity(intent);
+                            finish();
                         })
                         .addOnFailureListener(e -> Toast.makeText(EditProfileActivity.this, "Error updating profile", Toast.LENGTH_SHORT).show());
             }

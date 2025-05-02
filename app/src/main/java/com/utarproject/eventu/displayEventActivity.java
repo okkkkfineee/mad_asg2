@@ -107,6 +107,7 @@ public class displayEventActivity extends BaseActivity {
         eventView.setOnClickListener(v -> {
             Intent intent = new Intent(this, ViewEventActivity.class);
             intent.putExtra("EVENT_ID", eventId);
+            intent.putExtra("FROM_CREATED_EVENTS", true);
             startActivity(intent);
         });
 
