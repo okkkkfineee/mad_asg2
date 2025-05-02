@@ -56,11 +56,6 @@ public class EventBrowsingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_browsing);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         db = FirebaseFirestore.getInstance();
         eventsRef = db.collection("events");
@@ -170,7 +165,10 @@ public class EventBrowsingActivity extends AppCompatActivity {
             String campus = (selectedCampusButton == btnCampusKampar) ? "Kampar Campus" :
                     (selectedCampusButton == btnCampusSgLong) ? "Sg Long Campus" : null;
             Object selectedItem = ussdcSpinner.getSelectedItem();
-            String ussdc = (selectedItem != null && !selectedItem.toString().isEmpty()) ? selectedItem.toString() : null;
+            String ussdc = null;
+            if (selectedItem != null && !selectedItem.toString().equals("Choose a Category")) {
+                ussdc = selectedItem.toString();
+            }
             String dateFromStr = dateFrom.getText().toString().trim();
             String dateToStr = dateTo.getText().toString().trim();
             String searchText = searchBar.getText().toString().trim();
@@ -281,6 +279,11 @@ public class EventBrowsingActivity extends AppCompatActivity {
         // campus filter
         if (currentCampus != null && !currentCampus.isEmpty()) {
             query = query.whereEqualTo("eventLocation", currentCampus);
+        }
+
+        // ussdc category filter
+        if (currentUssdc != null && !currentUssdc.isEmpty()) {
+            query = query.whereEqualTo("eventUssdcCat", currentUssdc);
         }
 
         // date filters (from and to)

@@ -21,6 +21,7 @@
 
     <!-- Array of USSDC -->
     <string-array name="ussdc_array">
+        <item>Choose a Category</item>
         <item>Cognitive Skills</item>
         <item>Communication and Language Skills</item>
         <item>Complex Problem Solving</item>

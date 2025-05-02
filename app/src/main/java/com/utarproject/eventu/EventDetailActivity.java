@@ -23,11 +23,6 @@ public class EventDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_event_detail);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Initialize UI components
         TextView titleText = findViewById(R.id.titleText);
@@ -46,7 +41,11 @@ public class EventDetailActivity extends AppCompatActivity {
         ImageButton favBtn = findViewById(R.id.favBtn);
 
         // Back button action
-        backBtn.setOnClickListener(v -> onBackPressed());
+        backBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(EventDetailActivity.this, EventBrowsingActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
         // Fav button action
         // TODO: add favourite button features

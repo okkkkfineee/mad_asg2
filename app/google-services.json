@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1013722892754-1994mrm0qjfp7d1ncd8ajb95vemr9cs6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utarproject.eventu",
+            "certificate_hash": "836324f796249edbfc1794ec1f2047b42ad69466"
+          }
+        },
+        {
           "client_id": "1013722892754-5h5ukks27eqrn38kli7rj8licvepk045.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

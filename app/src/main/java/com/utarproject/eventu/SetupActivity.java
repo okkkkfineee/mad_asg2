@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -55,21 +59,49 @@ public class SetupActivity extends AppCompatActivity {
             String campus = campusSpinner.getSelectedItem().toString();
             String role = roleSpinner.getSelectedItem().toString();
 
-            if (!stuId.isEmpty() && !campus.equals(getString(R.string.select_campus)) && 
-                !role.equals(getString(R.string.select_role))) {
+            if (!stuId.isEmpty() && !campus.equals(getString(R.string.select_campus)) &&
+                    !role.equals(getString(R.string.select_role))) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 if (firebaseUser != null) {
                     String uid = firebaseUser.getUid();
                     String name = firebaseUser.getDisplayName();
-                    db.collection("users").document(uid)
-                            .update("stuId", stuId, "campus", campus, "role", role)
-                            .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(SetupActivity.this, "Welcome, " + name, Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(SetupActivity.this, ViewEventActivity.class));
-                                finish();
+
+                    // Check if user document exists
+                    db.collection("users").document(uid).get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    // Document exists, update user info
+                                    db.collection("users").document(uid)
+                                            .update("stuId", stuId, "campus", campus, "role", role)
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(SetupActivity.this, "Welcome, " + name, Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(SetupActivity.this, EventBrowsingActivity.class));
+                                                finish();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(SetupActivity.this, "Error updating user info", Toast.LENGTH_SHORT).show();
+                                            });
+                                } else {
+                                    // Document doesn't exist, set user data
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("stuId", stuId);
+                                    userData.put("campus", campus);
+                                    userData.put("role", role);
+
+                                    db.collection("users").document(uid)
+                                            .set(userData, SetOptions.merge())
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(SetupActivity.this, "Welcome, " + name, Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(SetupActivity.this, EventBrowsingActivity.class));
+                                                finish();
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.makeText(SetupActivity.this, "Error setting user info", Toast.LENGTH_SHORT).show();
+                                            });
+                                }
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(SetupActivity.this, "Error updating user info", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SetupActivity.this, "Error checking user document", Toast.LENGTH_SHORT).show();
                             });
                 }
             } else {

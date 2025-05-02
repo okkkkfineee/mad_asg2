@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             // User exists, go to main screen
-                            startActivity(new Intent(LoginActivity.this, displayEventActivity.class));
+                            startActivity(new Intent(LoginActivity.this, EventBrowsingActivity.class));
                         } else {
                             // New user, go to setup
                             startActivity(new Intent(LoginActivity.this, SetupActivity.class));
