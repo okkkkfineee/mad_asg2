@@ -142,7 +142,7 @@ public class InterestActivity extends BaseActivity {
 
     private void displayEvent(DocumentSnapshot eventDoc) {
         Log.d(TAG, "Displaying event: " + eventDoc.getId());
-        View eventView = getLayoutInflater().inflate(R.layout.item_event_card, null);
+        View eventView = getLayoutInflater().inflate(R.layout.item_interest_event_card, null);
 
         try {
             ((TextView) eventView.findViewById(R.id.eventName)).setText(eventDoc.getString("eventName"));
