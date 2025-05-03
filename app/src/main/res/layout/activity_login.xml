@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="291dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="32dp">
+
+        <!-- EventHive Title Container -->
+
+        <RelativeLayout
+            android:id="@+id/titleContainer"
+            android:layout_width="366dp"
+            android:layout_height="wrap_content"
+            android:alpha="0">
+
+            <ImageView
+                android:id="@+id/ivEventHiveLogo"
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@id/tvEventHive"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="12dp"
+                android:contentDescription="EventHive Logo"
+                android:src="@drawable/eventhive_logo" />
+
+            <TextView
+                android:id="@+id/tvEventHive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="EventHive"
+                android:textColor="@android:color/white"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="0"
+            android:gravity="center"
+            android:text="All UTAR Events,\nin One App."
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUtarSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:alpha="0"
+            android:background="@drawable/utar_signin_button_bg"
+            android:onClick="signIn"
+            android:padding="12dp"
+            android:text="Sign in with UTAR Email"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvTerms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0"
+            android:text="By Continuing you agree to the Terms and Conditions."
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout> 

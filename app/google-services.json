@@ -1,0 +1,92 @@
+{
+  "project_info": {
+    "project_number": "1013722892754",
+    "project_id": "uccd3223-b6792",
+    "storage_bucket": "uccd3223-b6792.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013722892754:android:716dd4181c9c07b445a00b",
+        "android_client_info": {
+          "package_name": "com.utarproject.eventu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013722892754-1994mrm0qjfp7d1ncd8ajb95vemr9cs6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utarproject.eventu",
+            "certificate_hash": "836324f796249edbfc1794ec1f2047b42ad69466"
+          }
+        },
+        {
+          "client_id": "1013722892754-5h5ukks27eqrn38kli7rj8licvepk045.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utarproject.eventu",
+            "certificate_hash": "f2172164494451a94c368e89f9cf73729e9ba2bc"
+          }
+        },
+        {
+          "client_id": "1013722892754-91j1j4nqc4d7i1le976036k68prm3l74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.utarproject.eventu",
+            "certificate_hash": "6d4969b9cb3e56355e830b45e0008a8a01c8aeb2"
+          }
+        },
+        {
+          "client_id": "1013722892754-i5h2s5ljojvekg3jfffgpuehrqmbnc0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzIn0MlHOnEQmMFqS42refJ8e6NaoudbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013722892754-i5h2s5ljojvekg3jfffgpuehrqmbnc0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013722892754:android:9bdb193143ea9be445a00b",
+        "android_client_info": {
+          "package_name": "my.edu.utar.madgrp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013722892754-i5h2s5ljojvekg3jfffgpuehrqmbnc0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzIn0MlHOnEQmMFqS42refJ8e6NaoudbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013722892754-i5h2s5ljojvekg3jfffgpuehrqmbnc0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

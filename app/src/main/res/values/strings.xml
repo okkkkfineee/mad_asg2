@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">EventHive</string>
+    <string name="select_campus">Select Campus</string>
+    <string name="select_role">Select Role</string>
+
+    <!-- Array of campuses -->
+    <string-array name="campus_array">
+        <item>@string/select_campus</item>
+        <item>Sg Long Campus</item>
+        <item>Kampar Campus</item>
+        <!-- Add more campuses as needed -->
+    </string-array>
+
+    <!-- Array of roles -->
+    <string-array name="role_array">
+        <item>@string/select_role</item>
+        <item>Organizer</item>
+        <item>Attendee</item>
+        <!-- Add more roles as needed -->
+    </string-array>
+
+    <!-- Array of USSDC -->
+    <string-array name="ussdc_array">
+        <item>Choose a Category</item>
+        <item>Cognitive Skills</item>
+        <item>Communication and Language Skills</item>
+        <item>Complex Problem Solving</item>
+        <item>Critical Thinking</item>
+        <item>Digital Literacy</item>
+        <item>Emotional Intelligence, Cultural Intelligence and Teamwork</item>
+        <item>Entrepreneurship Skills</item>
+        <item>Leadership Skills</item>
+        <item>Lifelong Learning and Information Management</item>
+        <item>Moral and Professional Ethics</item>
+        <!-- Add more category as needed -->
+    </string-array>
+
+    <string name="event_browsing_no_event">No Event Available...</string>
+    <string name="event_browsing_search_bar">Search</string>
+    <string name="event_details_register_btn">Register Now!</string>
+    <string name="event_details_details">Details</string>
+    <string name="event_details_event_text">About the Event</string>
+    <string name="filter_modal_title">Filter Options</string>
+    <string name="filter_modal_fee">Entry Fees</string>
+    <string name="filter_modal_fee_free">Free</string>
+    <string name="filter_modal_campus">Campus</string>
+    <string name="filter_modal_campus_kampar">Kampar</string>
+    <string name="filter_modal_campus_sglong">Sg Long</string>
+    <string name="filter_modal_ussdc">USSDC Category</string>
+    <string name="filter_modal_date">Event Date</string>
+    <string name="clear">Clear</string>
+    <string name="apply">Apply</string>
+</resources>
